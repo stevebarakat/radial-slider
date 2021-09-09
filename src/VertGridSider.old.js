@@ -3,8 +3,10 @@ import styled from "styled-components";
 
 const RangeWrap = styled.div`
   display: grid;
-  grid-template-rows: repeat(3, auto);
+  grid-template-columns: 100%;
+  grid-template-rows: repeat(100% 12px 100%);
   width: ${(p) => p.height + "px"};
+  /* margin-left: ${(p) => `${p.maxLabelLength + 3}ch`}; */
   transform: rotate(270deg);
   transform-origin: center;
   margin-top: ${(p) => p.height + "px"};
@@ -160,22 +162,33 @@ const StyledRangeSlider = styled.input.attrs({
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin: ${(p) => (p.wideTrack ? "10.5px" : "5px 2px")};
+  margin: ${(p) => (p.wideTrack ? "17.5px" : "10px")};
+  /* margin-top: ${(p) => (p.wideTrack ? "32px" : "12px")}; */
+  /* position: relative; */
+  /* top: -6.75em; */
 `;
 
-const Tick = styled.span`
-  align-self: center;
+const Tick = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: flex-start;
   width: 1px;
   height: 5px;
   background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
+  /* label {
+    color: var(--color-darkgray);
+    writing-mode: vertical-rl;
+    margin-left: 0.5em;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+  } */
 `;
 
 const Label = styled.label`
-  display: grid;
-  grid-template-columns: auto 1fr;
   color: var(--color-darkgray);
-  writing-mode: vertical-lr;
+  writing-mode: vertical-rl;
+  margin-left: 0.5em;
   margin-bottom: 0.5rem;
   white-space: nowrap;
 `;
@@ -198,10 +211,10 @@ export const VertGridSider = ({
     // { 50: "zeroonetwothreefourfive" },
     // { 100: "zeroonetwo" },
   ],
-  prefix = "",
-  suffix = "",
+  prefix = "Prefix ",
+  suffix = " Suffix",
   height = 500,
-  wideTrack = false,
+  wideTrack = true,
   showTooltip = true,
 }) => {
   const rangeEl = useRef(null);
@@ -246,29 +259,30 @@ export const VertGridSider = ({
       );
       // create tick mark for every element in the numbers array
       return numbers.map((n) => (
-        <div key={n}>
-          {
-            // if there are custom labels, show them!
-            customLabels?.length > 0
-              ? showLabels &&
-                customLabels.map((label) => {
-                  return (
-                    n === Number(Object.keys(label)[0]) && (
-                      <Label key={n} htmlFor={n.toString()}>
-                        {Object.values(label)}
-                        <Tick showLabels={showLabels} showTicks={showTicks} />
-                      </Label>
-                    )
-                  );
-                })
-              : // if there are not custom labels, show the default labels (n)
-                showLabels && (
-                  <Label key={n} htmlFor={n.toString()}>
-                    {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
-                    <Tick showLabels={showLabels} showTicks={showTicks} />
-                  </Label>
-                )
-          }
+        <div>
+          <Tick showLabels={showLabels} showTicks={showTicks} key={n}>
+            {
+              // if there are custom labels, show them!
+              customLabels?.length > 0
+                ? showLabels &&
+                  customLabels.map((label) => {
+                    return (
+                      n === Number(Object.keys(label)[0]) &&
+                      {
+                        /* <Label key={n} htmlFor={n.toString()}>
+                          {Object.values(label)}
+                        </Label> */
+                      }
+                    );
+                  })
+                : // if there are not custom labels, show the default labels (n)
+                  showLabels && (
+                    <Label key={n} htmlFor={n.toString()}>
+                      {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+                    </Label>
+                  )
+            }
+          </Tick>
         </div>
       ));
     }
