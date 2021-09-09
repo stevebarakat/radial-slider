@@ -6,7 +6,7 @@ const RangeWrap = styled.div`
   grid-template-rows: repeat(3, auto);
   width: ${(p) => p.height + "px"};
   transform: rotate(270deg);
-  transform-origin: center;
+  transform-origin: top left;
   margin-top: ${(p) => p.height + "px"};
   font-family: inherit;
   border: 1px dotted red;
