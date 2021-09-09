@@ -1,5 +1,7 @@
+import { VertGridSider } from "./VertGridSider";
+
 function App() {
-  return <div>App</div>;
+  return <VertGridSider />;
 }
 
 export default App;
