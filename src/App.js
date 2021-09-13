@@ -1,7 +1,13 @@
 import { VertGridSider } from "./VertGridSider";
+import { GridSlider } from "./GridSlider";
 
 function App() {
-  return <VertGridSider />;
+  return (
+    <>
+      {/* <GridSlider /> */}
+      <VertGridSider />
+    </>
+  );
 }
 
 export default App;

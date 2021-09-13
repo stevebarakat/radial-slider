@@ -1,16 +1,17 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 const RangeWrap = styled.div`
   display: grid;
   grid-template-rows: repeat(3, auto);
   width: ${(p) => p.height + "px"};
-  transform: rotate(270deg);
+  /* transform: rotate(270deg); */
   transform-origin: top left;
   margin-top: ${(p) => p.height + "px"};
   font-family: inherit;
   border: 1px dotted red;
 `;
+RangeWrap.displayName = "RangeWrap";
 
 const RangeOutput = styled.output`
   user-select: none;
@@ -179,25 +180,16 @@ const Label = styled.label`
   white-space: nowrap;
 `;
 
-const Conic = styled.output`
-  border-radius: 50%;
-  color: #7a7a7a;
-  font-size: 4.25em;
-  font-weight: 700;
-  background: ${(p) =>
-    `conic-gradient(#e64c65 calc(${p.val} * 1%), #41a8ab 0%)`};
-`;
-
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export const VertGridSider = ({
+export const GridSlider = ({
   initialValue = 50,
-  min = 14,
-  max = 168,
+  min = 0,
+  max = 100,
   decimals = 0,
-  step = 14,
+  step = 10,
   snap = false,
   showTicks = true,
   showLabels = true,
@@ -216,7 +208,6 @@ export const VertGridSider = ({
   const ticksEl = useRef(null);
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(0);
-  const [percent, setPercent] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
@@ -230,14 +221,6 @@ export const VertGridSider = ({
   if (max < min) {
     max = min;
   }
-
-  useEffect(() => {
-    const m = (100 / (min - max)) * -1;
-    const y1 = m * value;
-    const y2 = m * min;
-    setPercent(() => parseInt(y1 - y2, 10));
-    console.log(percent);
-  }, [max, min, percent, value]);
 
   useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
@@ -319,80 +302,74 @@ export const VertGridSider = ({
   }
 
   return (
-    <>
-      <RangeWrap
-        showTicks={showTicks}
-        height={height}
-        maxLabelLength={maxLabelLength}
-      >
-        <Ticks ref={ticksEl} wideTrack={wideTrack}>
-          {labels}
-        </Ticks>
-        <div>
-          <Progress
-            wideTrack={wideTrack}
-            focused={isFocused}
-            style={
-              !isFocused && wideTrack
-                ? {
-                    background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${
-                      newPosition * 2
-                    }px), var(--color-white) calc(${newValue}% + ${
-                      newPosition * 0.75
-                    }px), var(--color-white) 100%)`,
-                  }
-                : {
-                    background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${
-                      newPosition * 2
-                    }px), var(--color-secondary) calc(${newValue}% + ${
-                      newPosition * 0.75
-                    }px), var(--color-secondary) 100%)`,
-                  }
-            }
-          />
-          <StyledRangeSlider
-            aria-label="Basic Example"
-            aria-orientation="horizontal"
-            aria-valuenow={value}
-            aria-valuemin={min}
-            aria-valuemax={max}
-            tabIndex={0}
-            height={300}
-            ref={rangeEl}
-            min={min}
-            max={max}
-            step={snap ? step : 0}
-            value={value > max ? max : value.toFixed(decimals)}
-            onInput={(e) => {
-              setValue(e.target.valueAsNumber);
-            }}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onKeyDown={handleKeyPress}
-            focused={isFocused}
-            wideTrack={wideTrack}
-          />
-        </div>
-        {showTooltip && (
-          <RangeOutput
-            focused={isFocused}
-            wideTrack={wideTrack}
-            style={{
-              left: wideTrack
-                ? `calc(${newValue}% + ${newPosition * 1.75}px)`
-                : `calc(${newValue}% + ${newPosition}px)`,
-            }}
-          >
-            <span>
-              {prefix +
-                numberWithCommas(value.toFixed(decimals)) +
-                " " +
-                suffix}
-            </span>
-          </RangeOutput>
-        )}
-      </RangeWrap>
-      <Conic val={percent}>{percent}%</Conic>
-    </>
+    <RangeWrap
+      showTicks={showTicks}
+      height={height}
+      maxLabelLength={maxLabelLength}
+    >
+      <Ticks ref={ticksEl} wideTrack={wideTrack}>
+        {labels}
+      </Ticks>
+      <div>
+        <Progress
+          wideTrack={wideTrack}
+          focused={isFocused}
+          style={
+            !isFocused && wideTrack
+              ? {
+                  background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${
+                    newPosition * 2
+                  }px), var(--color-white) calc(${newValue}% + ${
+                    newPosition * 0.75
+                  }px), var(--color-white) 100%)`,
+                }
+              : {
+                  background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${
+                    newPosition * 2
+                  }px), var(--color-secondary) calc(${newValue}% + ${
+                    newPosition * 0.75
+                  }px), var(--color-secondary) 100%)`,
+                }
+          }
+        />
+        <StyledRangeSlider
+          aria-label="Basic Example"
+          aria-orientation="horizontal"
+          aria-valuenow={value}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          tabIndex={0}
+          height={300}
+          ref={rangeEl}
+          min={min}
+          max={max}
+          step={snap ? step : 0}
+          value={value > max ? max : value.toFixed(decimals)}
+          onInput={(e) => {
+            setValue(e.target.valueAsNumber);
+          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={handleKeyPress}
+          focused={isFocused}
+          wideTrack={wideTrack}
+        />
+      </div>
+      {showTooltip && (
+        <RangeOutput
+          focused={isFocused}
+          wideTrack={wideTrack}
+          style={{
+            left: wideTrack
+              ? `calc(${newValue}% + ${newPosition * 1.75}px)`
+              : `calc(${newValue}% + ${newPosition}px)`,
+          }}
+        >
+          <span>
+            {prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}
+          </span>
+        </RangeOutput>
+      )}
+    </RangeWrap>
   );
 };
