@@ -181,11 +181,30 @@ const Label = styled.label`
 
 const Conic = styled.output`
   border-radius: 50%;
-  color: #7a7a7a;
-  font-size: 4.25em;
-  font-weight: 700;
+  box-shadow: inset 0 1px 1px 0.5px var(--color-transparent-gray);
+  /* border: 1px solid black; */
+  /* aspect-ratio: 1/1; */
+  padding: 0.5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   background: ${(p) =>
-    `conic-gradient(#e64c65 calc(${p.val} * 1%), #41a8ab 0%)`};
+    `conic-gradient(var(--color-primary) calc(${p.val} * 1%), var(--color-secondary) 0%)`};
+  div {
+    color: var(--color-primary);
+    /* border: 1px solid black; */
+    width: 80px;
+    height: 80px;
+    box-shadow: inset 0 1px 1px 0.5px var(--color-transparent-gray);
+    padding: 0.2rem;
+    aspect-ratio: 1/1;
+    font-size: 1.25em;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 50%;
+  }
 `;
 
 function numberWithCommas(x) {
@@ -392,7 +411,9 @@ export const VertGridSider = ({
           </RangeOutput>
         )}
       </RangeWrap>
-      <Conic val={percent}>{percent}%</Conic>
+      <Conic val={percent}>
+        <div>{percent}%</div>
+      </Conic>
     </>
   );
 };
