@@ -182,8 +182,7 @@ const Label = styled.label`
 const Conic = styled.output`
   border-radius: 50%;
   box-shadow: inset 0 1px 1px 0.5px var(--color-transparent-gray);
-  /* border: 1px solid black; */
-  /* aspect-ratio: 1/1; */
+  border: 1px solid black;
   padding: 0.5rem;
   display: inline-flex;
   justify-content: center;
@@ -192,7 +191,7 @@ const Conic = styled.output`
     `conic-gradient(var(--color-primary) calc(${p.val} * 1%), var(--color-secondary) 0%)`};
   div {
     color: var(--color-primary);
-    /* border: 1px solid black; */
+    border: 1px solid black;
     width: 80px;
     height: 80px;
     box-shadow: inset 0 1px 1px 0.5px var(--color-transparent-gray);
