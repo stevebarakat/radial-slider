@@ -1,6 +1,6 @@
 export const COLORS = {
-  primary: "black",
-  secondary: "grey",
+  primary: "rebeccapurple",
+  secondary: "hotpink",
   offWhite: "hsla(209, 45%, 98%, 1.0)",
   gray50: "hsl(0deg 0% 95%)",
   gray300: "hsl(0deg 0% 75%)",
